@@ -12,9 +12,14 @@ describe('imported type', () => {
       'iEnumA',
       'iEnumB',
       'iEnumC',
-      'iSubA',
-      'iSubB',
-      'iSubC',
+      'iSubA1',
+      'iSubB1',
+      'iSubC1',
+      'iSubD1',
+      'iSubA2',
+      'iSubB2',
+      'iSubC2',
+      'iSubD2',
     ]);
   });
 

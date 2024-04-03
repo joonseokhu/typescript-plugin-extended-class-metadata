@@ -13,10 +13,10 @@ export class ClassVisitor {
   public createStaticGetter: CreateStaticGetter;
 
   public metadata: ClassTransformerMetadata = {
-    properties: [],
-    methods: [],
+    propNames: [],
+    methodNames: [],
     decorators: [],
-    metadata: {},
+    members: {},
   };
 
   constructor(
@@ -54,14 +54,14 @@ export class ClassVisitor {
         ...node.members,
         CreateStaticGetter.create(
           this.context,
-          GetterName.Props,
-          this.metadata.properties,
+          GetterName.PropNames,
+          this.metadata.propNames,
           isExtending,
         ),
         CreateStaticGetter.create(
           this.context,
-          GetterName.Methods,
-          this.metadata.methods,
+          GetterName.MethodNames,
+          this.metadata.methodNames,
           isExtending,
         ),
         this.createMetadataGetter(node),
@@ -71,7 +71,7 @@ export class ClassVisitor {
 
   createMetadataGetter(node: ts.ClassDeclaration) {
     const metadataValues: Record<string, ts.Expression> = {};
-    Object.entries(this.metadata.metadata).forEach(([key, value]) => {
+    Object.entries(this.metadata.members).forEach(([key, value]) => {
       metadataValues[key] = serializeValue.asRecord(value);
     });
     const metadata = serializeValue.asRecord(metadataValues, true);
@@ -82,7 +82,7 @@ export class ClassVisitor {
           this.context.factory.createCallExpression(
             this.context.factory.createPropertyAccessExpression(
               this.context.factory.createSuper(),
-              GetterName.Metadata,
+              GetterName.Members,
             ),
             undefined,
             [],
@@ -95,7 +95,7 @@ export class ClassVisitor {
     return this.context.factory.createMethodDeclaration(
       [this.context.factory.createModifier(ts.SyntaxKind.StaticKeyword)],
       undefined,
-      GetterName.Metadata,
+      GetterName.Members,
       undefined,
       undefined,
       [],

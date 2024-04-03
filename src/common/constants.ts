@@ -1,14 +1,16 @@
-export enum MetaName {
-  Prop = 'tsemd:prop',
-  Method = 'tsemd:method',
-  ReturnType = 'tsemd:returntype',
-  ParamTypes = 'tsemd:paramtypes',
+export const enum MetaName {
+  PropMeta = 'pm',
+  MethodMeta = 'mm',
+  ReturnType = 'rt',
+  ParamTypes = 'pt',
+  Constructor = 'ctr',
+  // Initializer = 'init',
 }
 
 export enum GetterName {
-  Props = '_tsemd_props',
-  Methods = '_tsemd_methods',
-  Metadata = '_tsemd_metadata',
+  PropNames = '_TSEMD_pn',
+  MethodNames = '_TSEMD_mn',
+  Members = '_TSEMD_m',
 }
 
 export enum ValueTypeName {

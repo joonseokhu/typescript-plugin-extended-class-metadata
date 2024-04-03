@@ -34,7 +34,7 @@ export class PropertyVisitor extends Visitor<ts.PropertyDeclaration> {
 
   parse(node: ts.PropertyDeclaration): Partial<Record<MetaName, ts.Expression>> {
     return {
-      [MetaName.Prop]: this.parsePropertyMetadata(node),
+      [MetaName.PropMeta]: this.parsePropertyMetadata(node),
     };
   }
 }

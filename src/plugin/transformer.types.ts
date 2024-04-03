@@ -2,8 +2,8 @@ import ts from 'typescript';
 import { MetaName } from '../lib';
 
 export interface ClassTransformerMetadata {
-  properties: string[];
-  methods: string[];
+  propNames: string[];
+  methodNames: string[];
   decorators: ts.ModifierLike[];
-  metadata: Record<string, Partial<Record<MetaName, ts.Expression>>>;
+  members: Record<string, Partial<Record<MetaName, ts.Expression>>>;
 }

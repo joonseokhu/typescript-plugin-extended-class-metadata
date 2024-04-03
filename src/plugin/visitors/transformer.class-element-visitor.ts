@@ -27,7 +27,21 @@ export class ClassElementVisitor {
 
   visitConstructor(node: ts.ConstructorDeclaration) {
     const paramTypes = node.parameters.map((parameter) => {
-      const parameterType = this.program.getTypeChecker().getTypeAtLocation(parameter);
+      const parameterType = this.program
+        .getTypeChecker()
+        .getTypeAtLocation(parameter);
+
+      const isMember = parameter
+        .modifiers?.some((modifier) => {
+          return [
+            ts.SyntaxKind.PrivateKeyword,
+            ts.SyntaxKind.ProtectedKeyword,
+            ts.SyntaxKind.PublicKeyword,
+          ].includes(modifier.kind);
+        });
+
+      if (isMember) this.visitProperty(parameter as unknown as ts.PropertyDeclaration);
+
       return new ValueTypeMetadata(
         parameter,
         parameterType,
@@ -36,10 +50,9 @@ export class ClassElementVisitor {
       ).serialize();
     });
 
-    this.metadata.decorators.push(this.metadataDecorator.create(
-      MetaName.ParamTypes,
-      serializeValue.asArray(paramTypes),
-    ));
+    this.metadata.members[MetaName.Constructor] = {
+      [MetaName.ParamTypes]: serializeValue.asArray(paramTypes),
+    };
 
     return node;
   }
@@ -50,15 +63,15 @@ export class ClassElementVisitor {
 
   private visitProperty(node: ts.PropertyDeclaration) {
     const memberName = this.getName(node);
-    this.metadata.properties.push(memberName);
-    this.metadata.metadata[memberName] = this.propertyVisitor.parse(node);
+    this.metadata.propNames.push(memberName);
+    this.metadata.members[memberName] = this.propertyVisitor.parse(node);
     return node;
   }
 
   private visitMethod(node: ts.MethodDeclaration) {
     const memberName = this.getName(node);
-    this.metadata.methods.push(memberName);
-    this.metadata.metadata[memberName] = this.methodVisitor.parse(node);
+    this.metadata.methodNames.push(memberName);
+    this.metadata.members[memberName] = this.methodVisitor.parse(node);
     return node;
   }
 

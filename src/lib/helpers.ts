@@ -37,7 +37,7 @@ export const parseMemberFlag = (flag: number): MemberFlags => {
  * @returns - property names of class
  */
 export const getPropertyNames = (TargetClass: Function, own = false): string[] => {
-  const ret = (TargetClass as any)[GetterName.Props]?.(own);
+  const ret = (TargetClass as any)[GetterName.PropNames]?.(own);
   return Array.from(new Set(ret));
 };
 
@@ -49,14 +49,14 @@ export const getPropertyNames = (TargetClass: Function, own = false): string[] =
  * @returns - method names of class
  */
 export const getMethodNames = (TargetClass: Function, own = false): string[] => {
-  const ret = (TargetClass as any)[GetterName.Methods]?.(own);
+  const ret = (TargetClass as any)[GetterName.MethodNames]?.(own);
   return Array.from(new Set(ret));
 };
 
 export const getMetadata = (metaKey: MetaName, target: object, propertyKey: string | symbol) => {
   // return (target as any)[GetterName.Metadata]?.()?.[propertyKey]?.[metaKey];
   let res: any = target.constructor;
-  res = res[GetterName.Metadata];
+  res = res[GetterName.Members];
   res = res?.();
   res = res?.[propertyKey];
   res = res?.[metaKey];
@@ -73,7 +73,7 @@ export const getPropertyMetadata = (
   target: object,
   propertyKey: string | symbol,
 ): ClassPropertyMetadata | undefined => {
-  const metadata = getMetadata(MetaName.Prop, target, propertyKey);
+  const metadata = getMetadata(MetaName.PropMeta, target, propertyKey);
   if (!metadata) return undefined;
   return {
     ...metadata,
@@ -92,8 +92,7 @@ export const getMethodMetadata = (
   target: object,
   propertyKey: string | symbol,
 ): ClassMethodMetadata | undefined => {
-  (target as any)[GetterName.Metadata]?.();
-  const metadata = getMetadata(MetaName.Method, target, propertyKey);
+  const metadata = getMetadata(MetaName.MethodMeta, target, propertyKey);
   if (!metadata) return undefined;
   return {
     ...metadata,
@@ -105,7 +104,6 @@ export const getMethodParamTypesMetadata = (
   target: object,
   propertyKey: string | symbol,
 ): ClassMethodParamTypesMetadata[] | undefined => {
-  (target as any)[GetterName.Metadata]?.();
   const metadata = getMetadata(MetaName.ParamTypes, target, propertyKey);
   if (!metadata) return undefined;
   return metadata.map((item: any) => ({
@@ -118,7 +116,6 @@ export const getMethodReturnTypeMetadata = (
   target: object,
   propertyKey: string | symbol,
 ): ClassMethodReturnTypeMetadata | undefined => {
-  (target as any)[GetterName.Metadata]?.();
   const metadata = getMetadata(MetaName.ReturnType, target, propertyKey);
   if (!metadata) return undefined;
   return {

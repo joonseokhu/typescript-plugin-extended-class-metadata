@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import {
   IBoolean, IEnumA, IEnumB, INumber, IString, ISubA, ISubB,
 } from './imported-type-data-1';
-import { IEnumC, ISubC } from './imported-type-data-2';
+import { IEnumC, ISubC, ISubD } from './imported-type-data-2';
 
 export class ImportedTypeTest {
   iBool: IBoolean = true;
@@ -17,9 +17,18 @@ export class ImportedTypeTest {
 
   iEnumC: IEnumC;
 
-  iSubA: ISubA = new ISubA();
+  iSubA1: ISubA = new ISubA();
 
-  iSubB: ISubB;
+  iSubB1: ISubB<number>;
 
-  iSubC: ISubC;
+  iSubC1: ISubC;
+
+  iSubD1: ISubD<number>;
+
+  constructor(
+    public iSubA2: ISubA,
+    public iSubB2: ISubB<number>,
+    public iSubC2: ISubC,
+    public iSubD2: ISubD<number>,
+  ) {}
 }

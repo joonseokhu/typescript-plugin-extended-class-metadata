@@ -64,7 +64,7 @@ export class MethodVisitor extends Visitor<ts.MethodDeclaration> {
 
   parse(node: ts.MethodDeclaration): Partial<Record<MetaName, ts.Expression>> {
     return {
-      [MetaName.Method]: this.parseMethodMetadata(node),
+      [MetaName.MethodMeta]: this.parseMethodMetadata(node),
       [MetaName.ParamTypes]: this.parseParamTypes(node),
       [MetaName.ReturnType]: this.parseReturnType(node),
     };

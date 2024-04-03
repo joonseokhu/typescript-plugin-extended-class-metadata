@@ -4,7 +4,8 @@
     "rootDir": "./test/src",
     "outDir": "./test/dist",
     "plugins": [{ "transform": "./dist/plugin" }],
-    "types": ["mocha"]
+    "types": ["mocha"],
+    "sourceMap": true
   },
   "include": ["./test/src/**/*.ts"],
   "exclude": ["./node_modules/", "./dist/", "./test/dist/"],
